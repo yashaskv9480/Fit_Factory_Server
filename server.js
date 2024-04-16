@@ -2,6 +2,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 const express = require('express')
 const app = express()
 const dotenv = require('dotenv')
+const cors = require('cors')
 
 const db = require('./db/DBConfig')
 const admin_routes = require('./routes/admin')
@@ -12,6 +13,8 @@ dotenv.config()
 
 
 const port = process.env.PORT || 5000
+
+app.use(cors())
 
 app.use('/api/admin',admin_routes)
 app.use('/api/user',user_routes)
@@ -33,6 +36,9 @@ app.get('/api/test-database', async(req, res) => {
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
+
+
+
 
 app.listen(port, () => {
   console.log(`Server is running on PORT ${port}`)
