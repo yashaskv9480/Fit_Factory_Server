@@ -8,7 +8,6 @@ const db = require('./db/DBConfig')
 const admin_routes = require('./routes/admin')
 const user_routes = require('./routes/users')
 const client_routes = require('./routes/client')
-const google_routes = require('./routes/google_oauth')
 dotenv.config()
 
 
@@ -19,7 +18,6 @@ app.use(cors())
 app.use('/api/admin',admin_routes)
 app.use('/api/user',user_routes)
 app.use('/api/client',client_routes)
-app.use('/api/google',google_routes)
 
 app.get('/api/test-database', async(req, res) => {
     try {

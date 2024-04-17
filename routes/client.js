@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router();
-const login_controller = require('../controllers/login_controller')
-const signup_controller = require('../controllers/signup_controller')
+const login_controller = require('../controllers/loginController')
+const signup_controller = require('../controllers/signupController')
 router.use(express.json())
 const multer = require('multer');
 
