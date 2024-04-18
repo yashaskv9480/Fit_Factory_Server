@@ -81,8 +81,9 @@ exports.google_oauth = async(req,res) => {
     const {email,name} = payload;
     const user_id = await userDetails.checkuserId(email)
     if(user_id){
-        const userRole = userDetails.checkuserRole(user_id)
-        const token = jwtTokenGeneration.token_generation(user_id,name,userRole)
+        const userRole = await userDetails.checkuserRole(user_id)
+        console.log(userRole)
+        const token = await jwtTokenGeneration.token_generation(user_id,name,userRole)
         res.status(200).json({token: token})
     }
     else{

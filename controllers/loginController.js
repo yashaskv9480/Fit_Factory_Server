@@ -14,7 +14,7 @@ exports.user_login =  async (req, res) => {
         console.log(user)
         if (user) {
                 const userRole = await user_Details.checkuserRole(user.user_id)
-                const token = jwtTokenGeneration.token_generation(user.user_id,user.name,userRole)
+                const token = await jwtTokenGeneration.token_generation(user.user_id,user.name,userRole)
                 console.log(token)
                 const responseObj = {
                 "token": token,

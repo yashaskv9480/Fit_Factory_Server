@@ -1,25 +1,29 @@
 # Server Side
-# To run
+##  To run
 
 - npm install 
 - nodemon
 
-# Features used 
+## Features used 
 
-## JWT
+### JWT
 
 - Authentication
 
-## Firebase 
+### Firebase 
 
 - To store and retrieve images from cloud
 
-## Google Oauth 
+### Google Oauth 
 
 - Login directly using Google oauth
 
-## Usage of routes and controllers 
+### Code Quality
+- Usage of controllers and routes 
+- Usage of reusable functions
 
+<br>
+<br>
 
 # Client Side
 
@@ -27,7 +31,17 @@
 - npm install
 - npm start
 
-# Modules 
+### Modules 
 - User login
 - Client login 
-- User login using Google oauth
+- User login/Signup using Google oauth 
+- After Login generate JWT token and store in cookie
+
+
+### Code Quality
+- Usage of same components  
+- Implement of axios and .env to hide the End points 
+
+
+### Features
+- Added laoding 
