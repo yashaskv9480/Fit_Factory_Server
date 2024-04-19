@@ -1,4 +1,5 @@
 const db = require('../db/DBConfig')
+const firebaseController = require('../controllers/firebase/firebase_controller')
 
 exports.viewusers = async(req, res) => {
     try {
@@ -12,3 +13,19 @@ exports.viewusers = async(req, res) => {
     }
 }
 
+exports.viewLocationGyms = async(req,res) => {
+    try{
+        const {location} = req.body;
+        const locationGymsResult = await db.query(`SELECT * FROM gym_details WHERE location = $1`, [location])
+        for(let i =0; i<  locationGymsResult.rows.length; i++){
+            const imageUrl = await firebaseController.downlaod_image(locationGymsResult.rows[i].gym_image)
+            locationGymsResult.rows[i].gym_image = imageUrl
+        }
+        console.log(locationGymsResult.rows)
+        res.status(200).json(locationGymsResult.rows)
+    }
+    catch(error){
+        console.log(error)
+        res.status(500).json({message: "Please Contact admin"})
+    }
+}

@@ -23,6 +23,20 @@ async function upload_image(imageBuffer,imageName) {
     }
 }
 
+async function downlaod_image(imageName){
+        try {
+          const bucket = admin.storage().bucket();
+          const fileRef = bucket.file(imageName);
+          const downloadURL= await getDownloadURL(fileRef);
+    
+          return downloadURL;
+        } catch (error) {
+          console.error('Error fetching images:', error);
+          return null
+        }
+}
+
 module.exports = {
-    upload_image
+    upload_image,
+    downlaod_image
 }

@@ -42,7 +42,6 @@ exports.client_signup = async(req,res) => {
     try{
     console.log(req.file)
     const {name,email,password,mobile} = req.body;
-    console.log(email)
     const check_user_id = await userDetails.checkuserId(email);
     if(check_user_id){
         console.log(check_user_id)
@@ -82,7 +81,6 @@ exports.google_oauth = async(req,res) => {
     const user_id = await userDetails.checkuserId(email)
     if(user_id){
         const userRole = await userDetails.checkuserRole(user_id)
-        console.log(userRole)
         const token = await jwtTokenGeneration.token_generation(user_id,name,userRole)
         res.status(200).json({token: token})
     }

@@ -45,3 +45,5 @@
 
 ### Features
 - Added laoding 
+- Role based Login and Redirection
+- Check token is valid for every api and component

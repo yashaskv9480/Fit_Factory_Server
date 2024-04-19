@@ -10,7 +10,6 @@ exports.checkuserId = async (email) => {
     const userQuery = await db.query("SELECT user_id FROM user_details WHERE email = $1", [email]); 
     if (userQuery.rows.length > 0) {
       const user_id = userQuery.rows[0].user_id;
-      console.log("User id:", user_id);
       return user_id;
     } else {
       return ;  
