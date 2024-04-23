@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const db = require('../db/DBConfig')
 
 exports.checkuserRole = async (user_id) => {
@@ -14,4 +15,9 @@ exports.checkuserId = async (email) => {
     } else {
       return ;  
     }
+}
+
+exports.getGymDetails = async (token) => {
+  const decoded = jwt.verify(token,process.env.TOKEN_SECRET)
+  return decoded
 }

@@ -1,11 +1,12 @@
 /*User details table */
 CREATE TABLE user_details (
     user_id SERIAL PRIMARY KEY,
-    name VARCHAR(25),
-    email VARCHAR(25),
-    password VARCHAR(25),
+    name VARCHAR(25) NOT NULL,
+    email VARCHAR(25) NOT NULL,
+    password VARCHAR(25) ,
     mobile VARCHAR(25)
 );
+
 
 /* Roles Table */
 CREATE TABLE roles(
@@ -23,13 +24,14 @@ CREATE TABLE user_role_management(
 /*Gym details Table*/
 CREATE TABLE gym_details(
     gym_id SERIAL PRIMARY KEY,
-    user_id integer REFERENCES user_details(user_id),
-    gym_name VARCHAR(25),
-    gym_image VARCHAR(50),
+    user_id integer NOT NULL REFERENCES user_details(user_id),
+    gym_name VARCHAR(25) NOT NULL,
+    gym_image VARCHAR(50) NOT NULL,
     description VARCHAR(25),
     location VARCHAR(25),
     address VARCHAR(25),
-    timings VARCHAR(25)
+    timings VARCHAR(25),
+    gym_price INT NOT NULL
 );
 
 /*Gym images Table*/
@@ -42,8 +44,8 @@ CREATE TABLE gym_images(
 /* Coupons Table */
 CREATE TABLE coupons(
     coupon_id SERIAL PRIMARY KEY,
-    coupon_name VARCHAR(25),
-    amount integer
+    coupon_name VARCHAR(25) NOT NULL,
+    amount integer NOT NULL
 );
 
 /*Bookings Table*/
@@ -52,6 +54,7 @@ CREATE TABLE bookings(
     user_id integer REFERENCES user_details(user_id),
     gym_id integer REFERENCES gym_details(gym_id),
     booking_date DATE NOT NULL,
+    amount integer NOT NULL,
     cid integer REFERENCES coupons(coupon_id),
     PRIMARY KEY(user_id,gym_id,booking_date)
 );

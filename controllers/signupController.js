@@ -4,6 +4,8 @@ const { OAuth2Client } = require('google-auth-library');
 const jwtTokenGeneration = require('./jwtAuthenticator')
 const userDetails = require('./userDetails')
 const client = new OAuth2Client();
+const {v4 : uuidv4} = require('uuid')
+
 
 async function userSignup(name, email, password, mobile, roleId) {
     const userQuery = "INSERT INTO user_details(name, email, password, mobile) VALUES ($1, $2, $3, $4) RETURNING user_id";
@@ -40,21 +42,20 @@ exports.user_signup = async (req, res) => {
 
 exports.client_signup = async(req,res) => {
     try{
-    console.log(req.file)
     const {name,email,password,mobile} = req.body;
     const check_user_id = await userDetails.checkuserId(email);
     if(check_user_id){
-        console.log(check_user_id)
         res.status(409).json({user_id:check_user_id})
     }
     else{
         const user_id = await userSignup(name,email,password,mobile,3);
-        const {gym_name,description,location,address,timings} = req.body;
-        const gymQuery = "Insert into gym_details(user_id,gym_name,description,location,address,timings) values ($1,$2,$3,$4,$5,$6) returning gym_id"
-        const gymValues = [user_id,gym_name,description,location,address,timings]
+        const {gym_name,description,location,address,timings,gym_price} = req.body;
+        const gymQuery = "Insert into gym_details(user_id,gym_name,description,location,address,timings,gym_price) values ($1,$2,$3,$4,$5,$6,$7) returning gym_id"
+        const gymValues = [user_id,gym_name,description,location,address,timings,gym_price]
         const gymResult = await db.query(gymQuery,gymValues);
+        const uuid = uuidv4()
         const gym_id = gymResult.rows[0].gym_id;
-        const imageName = gym_id+"_"+req.file.originalname;
+        const imageName = gym_id+"_"+uuid;
         const gymImageResult = await db.query("Update gym_details SET gym_image = $1 where gym_id = $2",[imageName,gym_id])
         const imageBuffer = req.file.buffer;
         firebase_controller.upload_image(imageBuffer,imageName);

@@ -35,7 +35,7 @@
 - User login
 - Client login 
 - User login/Signup using Google oauth 
-- After Login generate JWT token and store in cookie
+- User Check gyms based on gyms
 
 
 ### Code Quality
@@ -47,3 +47,5 @@
 - Added laoding 
 - Role based Login and Redirection
 - Check token is valid for every api and component
+- Post and retrieve images from firebase
+- After Login generate JWT token and store in cookie

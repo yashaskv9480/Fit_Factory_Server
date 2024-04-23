@@ -10,9 +10,17 @@ exports.user_login =  async (req, res) => {
         const { email, password } = req.body;
         const userDetails = await db.query("SELECT user_id,name FROM user_details WHERE email=($1) AND password=($2)", [email, password]);
         const user = userDetails.rows[0];
+        let token;
         if (user) {
                 const userRole = await user_Details.checkuserRole(user.user_id)
-                const token = await jwtTokenGeneration.token_generation(user.user_id,user.name,userRole)
+                if(userRole == 'client'){
+                    const gymDetailsResult = await db.query("Select gym_id,gym_name FROM gym_details WHERE user_id = $1",[user.user_id])
+                    const gym = gymDetailsResult.rows[0]
+                    token = await jwtTokenGeneration.token_generation(user.user_id,user.name,userRole,gym.gym_id,gym.gym_name)
+                }
+                else{
+                    token = await jwtTokenGeneration.token_generation(user.user_id,user.name,userRole)
+                }
                 const responseObj = {
                 "token": token,
             };
@@ -24,3 +32,4 @@ exports.user_login =  async (req, res) => {
         return res.status(500).json({ error: err.message });
     }
   };
+
