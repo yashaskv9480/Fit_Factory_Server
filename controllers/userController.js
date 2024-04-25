@@ -29,3 +29,11 @@ exports.viewLocationGyms = async(req,res) => {
         res.status(500).json({message: "Please Contact admin"})
     }
 }
+
+// exports.viewGyms = async(req,res) => {
+//     try{
+//         const {gym_id} = req.body 
+//         const gymDetailsResult = await db.query("SELECT * from gym_details where gym_id = $1",[gym_id])
+
+//     }
+// }
