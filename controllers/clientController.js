@@ -20,10 +20,10 @@ exports.gymAddImage = async(req,res) => {
         }
 };
 
-exports.gymGetImage = async(req,res,gymId) => {
+exports.gymGetImage = async(req,res) => {
     try{
         const token = req.header('Authorization');
-        const {gym_id} = gymId ? gym_id = gymId :  await userDetails.getGymDetails(token)
+        const {gym_id} =  await userDetails.getGymDetails(token)
         const gymImagesResult = await db.query("Select image_name FROM gym_images WHERE gym_id = $1",[gym_id])
         for(let i =0; i<  gymImagesResult.rows.length; i++){
           const imageUrl = await firebase_controller.downlaod_image(gymImagesResult.rows[i].image_name)

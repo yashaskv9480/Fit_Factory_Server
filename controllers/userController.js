@@ -30,10 +30,30 @@ exports.viewLocationGyms = async(req,res) => {
     }
 }
 
-// exports.viewGyms = async(req,res) => {
-//     try{
-//         const {gym_id} = req.body 
-//         const gymDetailsResult = await db.query("SELECT * from gym_details where gym_id = $1",[gym_id])
+exports.viewSingleGyms = async(req,res) => {
+    try{
+        const {gym_id} = req.params 
+        const gymDetailsResult = await db.query("SELECT * from gym_details where gym_id = $1",[gym_id])
+        const gymImagesResult = await gymGetImage(gym_id) 
+        res.status(200).json({gymDetails: gymDetailsResult.rows,gymImages: gymImagesResult})
+        
+    }
+    catch(err){
+        res.status(500).json({message: "Contact Admin"})
+    }
+}
 
-//     }
-// }
+const gymGetImage = async(gym_id) => {
+    try{
+        const gymImagesResult = await db.query("Select image_name FROM gym_images WHERE gym_id = $1",[gym_id])
+        for(let i =0; i<  gymImagesResult.rows.length; i++){
+          const imageUrl = await firebaseController.downlaod_image(gymImagesResult.rows[i].image_name)
+          gymImagesResult.rows[i].image_url = imageUrl
+      }
+        return gymImagesResult.rows
+    }   
+    catch(err){
+        console.log(err)
+        res.status(500).json({message: "Please Contact Admin"})
+    }
+}
