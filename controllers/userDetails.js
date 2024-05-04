@@ -17,7 +17,7 @@ exports.checkuserId = async (email) => {
     }
 }
 
-exports.getGymDetails = async (token) => {
+exports.decodedToken = async (token) => {
   const decoded = jwt.verify(token,process.env.TOKEN_SECRET)
   return decoded
 }

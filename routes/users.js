@@ -12,6 +12,6 @@ router.post('/google/oauth',signup_controller.google_oauth)
 router.get('/authenticate',jwtAuthenticator.jwt_verify)
 router.post('/getlocationgyms',userController.viewLocationGyms)
 router.get('/getsinglegym/:gym_id',userController.viewSingleGyms)
-
+router.post('/booking',jwtAuthenticator.jwt_verify,userController.bookGym)
 
 module.exports = router;

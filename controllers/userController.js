@@ -1,5 +1,6 @@
 const db = require('../db/DBConfig')
 const firebaseController = require('../controllers/firebase/firebase_controller')
+const userDetails = require("./userDetails")
 
 exports.viewusers = async(req, res) => {
     try {
@@ -21,7 +22,6 @@ exports.viewLocationGyms = async(req,res) => {
             const imageUrl = await firebaseController.downlaod_image(locationGymsResult.rows[i].gym_image)
             locationGymsResult.rows[i].gym_image = imageUrl
         }
-        console.log(locationGymsResult.rows)
         res.status(200).json(locationGymsResult.rows)
     }
     catch(error){
@@ -40,6 +40,34 @@ exports.viewSingleGyms = async(req,res) => {
     }
     catch(err){
         res.status(500).json({message: "Contact Admin"})
+    }
+}
+
+exports.bookGym = async(req,res) => {
+    try{
+        const token = req.header('Authorization');
+        const {bookingDates,gym_id,gym_price} = req.body;
+        const {user_id} = await userDetails.decodedToken(token);
+        const query = "Insert into bookings(user_id,gym_id,booking_date,cid,amount) Values($1,$2,$3,$4,$5)"
+        console.log(bookingDates)
+        if (Array.isArray(bookingDates)) {
+            for (const date of bookingDates) {
+                const values = [user_id, gym_id, date, null, gym_price];
+                await db.query(query, values);
+            }
+        } else { 
+            const values = [user_id, gym_id, bookingDates, null, gym_price];
+            await db.query(query, values);
+        }
+        res.status(200).json({message: "Succesfully Booked"})
+    }
+    catch (err) {
+        if (err.code === "23505") { 
+            res.status(400).json({ error: "Duplicate booking attempt" });
+        } else {
+            console.error(err);
+            res.status(500).json({ error: "Something went wrong" });
+        }
     }
 }
 
