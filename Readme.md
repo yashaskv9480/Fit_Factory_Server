@@ -10,6 +10,7 @@
 ### JWT
 
 - Authentication
+- Checking role on every authentication/api call
 
 ### Firebase
 
@@ -54,3 +55,4 @@
 - Check token is valid for every api and component
 - Post and retrieve images from firebase
 - After Login generate JWT token and store in cookie
+- Role based Authorization

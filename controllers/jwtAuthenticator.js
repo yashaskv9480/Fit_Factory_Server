@@ -12,7 +12,54 @@ exports.jwt_verify = (req, res, next) => {
 
     jwt.verify(token, secretKey, (err, user) => {
         if (err) return res.sendStatus(403);
+        console.log(user)
         next();
     });
 };
 
+exports.isClient = (req, res, next) => {
+    const token = req.header('Authorization');
+    if (!token) return res.sendStatus(401);
+
+    jwt.verify(token, secretKey, (err, user) => {
+        if (err) return res.sendStatus(403);
+
+        if (user.role !== 'client') {
+            return res.status(403).send('Access Denied. Not a client.');
+        }
+        req.user = user;
+        next();
+    });
+};
+
+exports.isUser = (req, res, next) => {
+    const token = req.header('Authorization');
+    if (!token) return res.sendStatus(401);
+
+    jwt.verify(token, secretKey, (err, user) => {
+        if (err) return res.sendStatus(403);
+
+        if (user.role !== 'user') {
+            return res.status(403).send('Access Denied. Not a user.');
+        }
+
+        req.user = user;
+        next();
+    });
+};
+
+exports.isAdmin = (req, res, next) => {
+    const token = req.header('Authorization');
+    if (!token) return res.sendStatus(401);
+
+    jwt.verify(token, secretKey, (err, user) => {
+        if (err) return res.sendStatus(403);
+
+        if (user.role !== 'admin') {
+            return res.status(403).send('Access Denied. Not an admin.');
+        }
+
+        req.user = user;
+        next();
+    });
+};

@@ -13,5 +13,6 @@ router.get('/authenticate',jwtAuthenticator.jwt_verify)
 router.post('/getlocationgyms',userController.viewLocationGyms)
 router.get('/getsinglegym/:gym_id',userController.viewSingleGyms)
 router.post('/booking',jwtAuthenticator.jwt_verify,userController.bookGym)
+router.get('/userdetails',jwtAuthenticator.isUser,userController.viewUserDetails)
 
 module.exports = router;

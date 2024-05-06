@@ -1,8 +1,9 @@
 const admin = require('firebase-admin');
+const {getStorage, ref, deleteObject} = require("firebase/storage")
 const dotenv = require('dotenv')
 dotenv.config()
 const serviceAccount = JSON.parse(process.env.FIREBASE_CONFIG || {})
-const { getStorage, getDownloadURL } = require('firebase-admin/storage');
+const {getDownloadURL } = require('firebase-admin/storage');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -36,7 +37,21 @@ async function downlaod_image(imageName){
         }
 }
 
+async function delete_image(imageName){
+  try{
+    const bucket = admin.storage().bucket();
+    const file = bucket.file(imageName);
+    const result = await file.delete();
+    console.log("Deleted Image")
+  }
+  catch(err){
+    console.log("Error deleteing image",err)
+  }
+}
+
+
 module.exports = {
     upload_image,
-    downlaod_image
+    downlaod_image,
+    delete_image
 }

@@ -2,12 +2,14 @@ const db = require('../db/DBConfig')
 const firebaseController = require('../controllers/firebase/firebase_controller')
 const userDetails = require("./userDetails")
 
-exports.viewusers = async(req, res) => {
+exports.viewUserDetails = async(req, res) => {
     try {
-        const allusers = await db.query(
-            'SELECT * FROM user_details'
+        const token = req.header("Authorization")
+        const {user_id} = await userDetails.decodedToken(token);
+        const userDetailResponse = await db.query(
+            `Select * from user_details where user_id = $1`,[user_id]
         );
-        res.json(allusers.rows);
+        res.json(userDetailResponse.rows);
     } catch (error) {
         console.log(error);
         res.status(500).send(error.message)
