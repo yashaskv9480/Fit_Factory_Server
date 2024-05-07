@@ -56,3 +56,4 @@
 - Post and retrieve images from firebase
 - After Login generate JWT token and store in cookie
 - Role based Authorization
+- Reseeting password based on Oauth and exsiting user

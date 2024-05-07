@@ -77,7 +77,6 @@ exports.google_oauth = async(req,res) => {
     audience: client_id,
     });
     const payload = ticket.getPayload();
-    console.log(payload)
     const {email,name} = payload;
     const user_id = await userDetails.checkuserId(email)
     if(user_id){
