@@ -38,6 +38,7 @@ exports.viewLocationGyms = async (req, res) => {
   }
 };
 
+
 exports.viewSingleGyms = async (req, res) => {
   try {
     const { gym_id } = req.params;
@@ -160,6 +161,57 @@ exports.getCurrentPassword = async (req, res) => {
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+exports.addReview = async (req, res) => {
+  try {
+    const { gym_id, rating, review } = req.body;
+    const token = req.header("Authorization");
+    const { user_id } = await userDetails.decodedToken(token);
+    const query = `Insert into reviews(user_id,gym_id,review,rating) VALUES ($1,$2,$3,$4)`;
+    const values = [user_id, gym_id, review, rating];
+    const addReviewQuery = await db.query(query, values);
+    res.status(200).json({ message: "Succesfully review added." });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ message: "Failed to add review" });
+  }
+};
+
+exports.fetchReview = async (req, res) => {
+  try {
+    const { gym_id } = req.params;
+    const fetchReviewQuery = await db.query(
+      `SELECT r.review, r.rating, u.name
+    FROM reviews r
+    JOIN user_Details u ON r.user_id = u.user_id
+    WHERE r.gym_id = $1;
+    `,
+      [gym_id]
+    );
+    res.status(200).json(fetchReviewQuery.rows);
+  } catch (err) {
+    res.status(500).json({ message: "Error in retriving" });
+  }
+};
+
+exports.userViewBookings = async (req, res) => {
+  try {
+    const token = req.header("Authorization");
+    const { user_id } = await userDetails.decodedToken(token);
+    const userViewBookingsQuery = await db.query(
+      `SELECT b.booking_id, b.booking_date, b.amount, g.gym_name
+    FROM bookings b
+    JOIN gym_Details g ON b.gym_id = g.gym_id
+    WHERE b.user_id = $1
+    ORDER BY b.booking_date;
+    `,
+      [user_id]
+    );
+    res.status(200).json(userViewBookingsQuery.rows);
+  } catch (err) {
+    res.status(500).json({ message: "Error in retriving" });
   }
 };
 

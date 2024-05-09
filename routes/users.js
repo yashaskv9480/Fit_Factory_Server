@@ -40,4 +40,11 @@ router.put(
   userController.updateDetails
 );
 
+router.post("/addreview", jwtAuthenticator.isUser, userController.addReview);
+router.get("/fetchreview/:gym_id", userController.fetchReview);
+router.get(
+  "/viewuserbookings",
+  jwtAuthenticator.isUser,
+  userController.userViewBookings
+);
 module.exports = router;
