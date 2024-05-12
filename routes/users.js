@@ -47,4 +47,11 @@ router.get(
   jwtAuthenticator.isUser,
   userController.userViewBookings
 );
+
+router.post(
+  "/checkdatebooked",
+  jwtAuthenticator.isUser,
+  userController.checkDatesBooked
+);
+
 module.exports = router;
