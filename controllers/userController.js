@@ -87,7 +87,7 @@ exports.checkDatesBooked = async (req, res) => {
     const { bookingDates, gym_id, gym_price } = req.body;
     const token = req.header("Authorization");
     const { user_id } = await userDetails.decodedToken(token);
-    console.log(bookingDates);
+    console.log(bookingDates, gym_id, user_id);
     const bookedDates = new Set();
     if (Array.isArray(bookingDates)) {
       for (const date of bookingDates) {
@@ -95,22 +95,23 @@ exports.checkDatesBooked = async (req, res) => {
           "SELECT * FROM bookings WHERE booking_date = $1 AND gym_id = $2 AND user_id = $3",
           [date, gym_id, user_id]
         );
-
         if (existingBookingResult.rows.length > 0) {
           bookedDates.add(date);
         }
       }
     } else {
       const existingBookingResult = await db.query(
-        `SELECT * FROM bookings WHERE booking_date = $1`,
-        [bookingDates]
+        "SELECT * FROM bookings WHERE booking_date = $1 AND gym_id = $2 AND user_id = $3",
+        [bookingDates, gym_id, user_id]
       );
+      console.log(existingBookingResult.rows.length);
       if (existingBookingResult.rows.length > 0) {
         bookedDates.add(bookingDates);
       }
     }
-    if (bookedDates.length > 0) {
-      return res.status(400).json(bookedDates);
+    console.log(bookedDates);
+    if (bookedDates.size > 0) {
+      return res.status(400).json({ bookedDates: [...bookedDates] });
     }
     res.status(200).json({ message: "Dates are not bookied" });
   } catch (err) {
