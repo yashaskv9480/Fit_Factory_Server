@@ -48,6 +48,8 @@ exports.isClient = (req, res, next) => {
 
 exports.isUser = (req, res, next) => {
   const token = req.header("Authorization");
+  console.log(token);
+
   if (!token) return res.sendStatus(401);
 
   jwt.verify(token, secretKey, (err, user) => {

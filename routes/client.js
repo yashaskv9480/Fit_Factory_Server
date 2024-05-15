@@ -38,4 +38,11 @@ router.get(
   clientController.viewGymDetails
 );
 
+router.put(
+  "/updategymdetails",
+  jwtAuthenticator.isClient,
+  clientController.updateGymDetails
+);
+
+
 module.exports = router;

@@ -21,17 +21,17 @@ exports.viewUserDetails = async (req, res) => {
 exports.viewLocationGyms = async (req, res) => {
   try {
     const { location } = req.body;
-    const locationGymsResult = await db.query(
+    const viewWishListQuery = await db.query(
       `SELECT * FROM gym_details WHERE location = $1`,
       [location]
     );
-    for (let i = 0; i < locationGymsResult.rows.length; i++) {
+    for (let i = 0; i < viewWishListQuery.rows.length; i++) {
       const imageUrl = await firebaseController.downlaod_image(
-        locationGymsResult.rows[i].gym_image
+        viewWishListQuery.rows[i].gym_image
       );
-      locationGymsResult.rows[i].gym_image = imageUrl;
+      viewWishListQuery.rows[i].gym_image = imageUrl;
     }
-    res.status(200).json(locationGymsResult.rows);
+    res.status(200).json(viewWishListQuery.rows);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Please Contact admin" });
@@ -249,6 +249,67 @@ exports.userViewBookings = async (req, res) => {
     res.status(200).json(userViewBookingsQuery.rows);
   } catch (err) {
     res.status(500).json({ message: "Error in retriving" });
+  }
+};
+
+exports.addwishlist = async (req, res) => {
+  try {
+    const { gym_id } = req.params;
+    const token = req.header("Authorization");
+    const { user_id } = await userDetails.decodedToken(token);
+    console.log(user_id, gym_id);
+    const addwishlistQuery = await db.query(
+      `Insert into wishlist(user_id,gym_id) VALUES ($1,$2)`,
+      [user_id, gym_id]
+    );
+    res.status(200).json({ message: "Successfully added" });
+  } catch (error) {
+    if (error.code === "23505") {
+      return res.status(409).json({ message: "Duplicate wishlist entry" });
+    } else {
+      console.error(error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  }
+};
+
+exports.viewWishList = async (req, res) => {
+  try {
+    const token = req.header("Authorization");
+    const { user_id } = await userDetails.decodedToken(token);
+    const viewWishListQuery = await db.query(
+      `SELECT g.*
+      FROM wishlist w
+      JOIN gym_Details g ON w.gym_id = g.gym_id
+      WHERE w.user_id = $1;
+      `,
+      [user_id]
+    );
+    for (let i = 0; i < viewWishListQuery.rows.length; i++) {
+      const imageUrl = await firebaseController.downlaod_image(
+        viewWishListQuery.rows[i].gym_image
+      );
+      viewWishListQuery.rows[i].gym_image = imageUrl;
+    }
+    res.status(200).json(viewWishListQuery.rows);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ message: "Failed to retrieve the data" });
+  }
+};
+
+exports.deleteWishList = async (req, res) => {
+  try {
+    const { gym_id } = req.params;
+    const token = req.header("Authorization");
+    const { user_id } = await userDetails.decodedToken(token);
+    await db.query(`Delete from wishlist where user_id = $1 and gym_id = $2`, [
+      user_id,
+      gym_id,
+    ]);
+    res.status(200).json({ message: "Successfully Deleted" });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to delete" });
   }
 };
 

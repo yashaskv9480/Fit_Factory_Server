@@ -54,4 +54,22 @@ router.post(
   userController.checkDatesBooked
 );
 
+router.post(
+  "/addwishlist/:gym_id",
+  jwtAuthenticator.isUser,
+  userController.addwishlist
+);
+
+router.get(
+  "/viewwishlist",
+  jwtAuthenticator.isUser,
+  userController.viewWishList
+);
+
+router.delete(
+  "/deletewishlist/:gym_id",
+  jwtAuthenticator.isUser,
+  userController.deleteWishList
+);
+
 module.exports = router;

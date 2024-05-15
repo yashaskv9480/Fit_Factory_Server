@@ -57,3 +57,8 @@
 - After Login generate JWT token and store in cookie
 - Role based Authorization
 - Reseeting password based on Oauth and exsiting user
+- Check dates before booking if its booked or not
+- Razorpay Payment
+- Wishlist
+- Dashboard for admin and client
+- Add review and view review based on users

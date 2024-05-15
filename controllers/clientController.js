@@ -26,6 +26,63 @@ WHERE u.user_id = $1;
   }
 };
 
+exports.updateGymDetails = async (req, res) => {
+  try {
+    const token = req.header("Authorization");
+    const { user_id } = await userDetails.decodedToken(token);
+    const {
+      name,
+      email,
+      mobile,
+      gym_name,
+      location,
+      address,
+      timings,
+      description,
+      gym_price,
+    } = req.body;
+    const updateUserQuery = `
+    UPDATE user_Details AS u
+    SET 
+      name = $1,
+      email = $2,
+      mobile = $3
+    FROM gym_Details AS g
+    WHERE
+      u.user_id = g.user_id
+      AND u.user_id = $4;
+  `;
+    await db.query(updateUserQuery, [name, email, mobile, user_id]);
+
+    const updateGymQuery = `
+    UPDATE gym_Details AS g
+    SET 
+      gym_name = $1,
+      location = $2,
+      address = $3,
+      timings = $4,
+      description = $5,
+      gym_price = $6
+    WHERE
+      g.user_id = $7;
+  `;
+    await db.query(updateGymQuery, [
+      gym_name,
+      location,
+      address,
+      timings,
+      description,
+      gym_price,
+      user_id,
+    ]);
+
+    res.status(200).json({ message: "Updated Successfully" });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ message: "Error is updating" });
+  }
+};
+
 exports.gymAddImage = async (req, res) => {
   try {
     const token = req.header("Authorization");
