@@ -186,7 +186,7 @@ exports.getCurrentPassword = async (req, res) => {
     const { user_id } = await userDetails.decodedToken(token);
     const query = `SELECT password FROM user_details WHERE user_id = $1`;
     const result = await db.query(query, [user_id]);
-
+    console.log(result.rows)
     const currentPassword = result.rows[0]?.password;
     if (currentPassword === null || currentPassword === undefined) {
       return res
