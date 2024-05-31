@@ -15,17 +15,18 @@ router.get("/getsinglegym/:gym_id", userController.viewSingleGyms);
 router.post("/booking", jwtAuthenticator.isUser, userController.bookGym);
 router.get(
   "/getpassword",
-  jwtAuthenticator.isUser,
+  jwtAuthenticator.jwt_verify,
+  jwtAuthenticator.jwt_verify,
   userController.getCurrentPassword
 );
 router.put(
   "/resetoauthpassword",
-  jwtAuthenticator.isUser,
+  jwtAuthenticator.jwt_verify,
   userController.resetOauthPassword
 );
 router.put(
   "/resetpassword",
-  jwtAuthenticator.isUser,
+  jwtAuthenticator.jwt_verify,
   userController.resetPassword
 );
 

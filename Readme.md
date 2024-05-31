@@ -20,6 +20,10 @@
 
 - Login directly using Google oauth
 
+### Razorpay
+
+- Razorpay Payment
+
 ### Code Quality
 
 - Usage of controllers and routes
@@ -51,14 +55,11 @@
 ### Features
 
 - Added laoding
-- Role based Login and Redirection
 - Check token is valid for every api and component
 - Post and retrieve images from firebase
 - After Login generate JWT token and store in cookie
-- Role based Authorization
 - Reseeting password based on Oauth and exsiting user
 - Check dates before booking if its booked or not
-- Razorpay Payment
 - Wishlist
 - Dashboard for admin and client
 - Add review and view review based on users

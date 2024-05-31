@@ -85,8 +85,10 @@ exports.google_oauth = async(req,res) => {
         res.status(200).json({token: token})
     }
     else{
-        await userSignup(name,email,null,null,2)
-        res.status(200).json(payload);
+        const user_id = await userSignup(name,email,null,null,2)
+        const userRole = await userDetails.checkuserRole(user_id)
+        const token = await jwtTokenGeneration.token_generation(user_id,name,userRole)
+        res.status(200).json({token: token});
     }
     } catch (err) {
     console.log(err)
