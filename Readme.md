@@ -20,7 +20,7 @@
 - npm install
 - nodemon
 
-## Features used
+## Features 
 
 ### JWT
 
