@@ -1,3 +1,18 @@
+# To Run
+
+- npm install
+- nodemon (server)
+- npm start(client)
+
+## Insde .env
+- Add Firebase config for service account
+- Razorpay key 
+- Razorpay Secret
+- Firebase Storage Bucket
+- Postgres link from Render application (refer db folder database)
+- Google_Client_ID(Inside React app)
+- Backend APi(Inside React app)
+
 # Server Side
 
 ## To run
@@ -63,3 +78,5 @@
 - Wishlist
 - Dashboard for admin and client
 - Add review and view review based on users
+
+
