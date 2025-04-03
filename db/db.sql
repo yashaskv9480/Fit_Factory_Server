@@ -26,7 +26,7 @@ CREATE TABLE gym_details(
     gym_id SERIAL PRIMARY KEY,
     user_id integer NOT NULL REFERENCES user_details(user_id),
     gym_name VARCHAR(25) NOT NULL,
-    gym_image VARCHAR(50) NOT NULL,
+    gym_image VARCHAR(50),
     description VARCHAR(25),
     location VARCHAR(25),
     address VARCHAR(25),
@@ -75,3 +75,7 @@ CREATE TABLE gym_equipments(
 
 /*Queries */
 ALTER SEQUENCE user_details_user_id_seq RESTART WITH 2;
+
+INSERT INTO roles (role_id, role) VALUES (1, 'admin');
+INSERT INTO roles (role_id, role) VALUES (2, 'user');   
+INSERT INTO roles (role_id, role) VALUES (3, 'client');
