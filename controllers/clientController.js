@@ -17,7 +17,7 @@ FROM user_Details u
 JOIN gym_Details g ON u.user_id = g.user_id
 WHERE u.user_id = $1;
 `,
-      [user_id]
+      [user_id],
     );
     res.status(200).json(gymDetailsQuery.rows);
   } catch (err) {
@@ -92,11 +92,11 @@ exports.gymAddImage = async (req, res) => {
     const imageName = gym_id + uuid;
     const response = await firebase_controller.upload_image(
       imageBuffer,
-      imageName
+      imageName,
     );
     const uploadImageResult = await db.query(
       "Insert into gym_images(gym_id,image_name) VALUES ($1,$2)",
-      [gym_id, imageName]
+      [gym_id, imageName],
     );
     res.status(200).json({ message: "Successfully Uplaoded" });
   } catch (error) {
@@ -111,11 +111,11 @@ exports.gymGetImage = async (req, res) => {
     const { gym_id } = await userDetails.decodedToken(token);
     const gymImagesResult = await db.query(
       "Select image_name FROM gym_images WHERE gym_id = $1",
-      [gym_id]
+      [gym_id],
     );
     for (let i = 0; i < gymImagesResult.rows.length; i++) {
       const imageUrl = await firebase_controller.downlaod_image(
-        gymImagesResult.rows[i].image_name
+        gymImagesResult.rows[i].image_name,
       );
       gymImagesResult.rows[i].image_url = imageUrl;
     }
@@ -132,7 +132,7 @@ exports.getBookingDetails = async (req, res) => {
     const { gym_id } = await userDetails.decodedToken(token);
     const gymBookingResult = await db.query(
       "SELECT b.booking_id,b.booking_date,b.amount, u.name FROM bookings b JOIN user_details u ON b.user_id = u.user_id WHERE b.gym_id = $1",
-      [gym_id]
+      [gym_id],
     );
     res.status(200).json(gymBookingResult.rows);
   } catch (err) {

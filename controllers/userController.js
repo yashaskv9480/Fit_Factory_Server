@@ -9,7 +9,7 @@ exports.viewUserDetails = async (req, res) => {
     const { user_id } = await userDetails.decodedToken(token);
     const userDetailResponse = await db.query(
       `Select user_id,name,email,mobile from user_details where user_id = $1`,
-      [user_id]
+      [user_id],
     );
     res.json(userDetailResponse.rows);
   } catch (error) {
@@ -23,11 +23,11 @@ exports.viewLocationGyms = async (req, res) => {
     const { location } = req.body;
     const viewWishListQuery = await db.query(
       `SELECT * FROM gym_details WHERE location = $1`,
-      [location]
+      [location],
     );
     for (let i = 0; i < viewWishListQuery.rows.length; i++) {
       const imageUrl = await firebaseController.downlaod_image(
-        viewWishListQuery.rows[i].gym_image
+        viewWishListQuery.rows[i].gym_image,
       );
       viewWishListQuery.rows[i].gym_image = imageUrl;
     }
@@ -43,7 +43,7 @@ exports.viewSingleGyms = async (req, res) => {
     const { gym_id } = req.params;
     const gymDetailsResult = await db.query(
       "SELECT * from gym_details where gym_id = $1",
-      [gym_id]
+      [gym_id],
     );
     const gymImagesResult = await gymGetImage(gym_id);
     res
@@ -93,7 +93,7 @@ exports.checkDatesBooked = async (req, res) => {
       for (const date of bookingDates) {
         const existingBookingResult = await db.query(
           "SELECT * FROM bookings WHERE booking_date = $1 AND gym_id = $2 AND user_id = $3",
-          [date, gym_id, user_id]
+          [date, gym_id, user_id],
         );
         if (existingBookingResult.rows.length > 0) {
           bookedDates.add(date);
@@ -102,7 +102,7 @@ exports.checkDatesBooked = async (req, res) => {
     } else {
       const existingBookingResult = await db.query(
         "SELECT * FROM bookings WHERE booking_date = $1 AND gym_id = $2 AND user_id = $3",
-        [bookingDates, gym_id, user_id]
+        [bookingDates, gym_id, user_id],
       );
       console.log(existingBookingResult.rows.length);
       if (existingBookingResult.rows.length > 0) {
@@ -144,7 +144,7 @@ exports.resetOauthPassword = async (req, res) => {
     const { newPassword } = req.body;
     const resetPasswordQuery = await db.query(
       `Update user_details SET password = $1 where user_id = $2`,
-      [newPassword, user_id]
+      [newPassword, user_id],
     );
     res.status(200).json({ message: "Succesfully Password Reset" });
   } catch (err) {
@@ -160,14 +160,14 @@ exports.resetPassword = async (req, res) => {
 
     const getCurrentPasswordQuery = await db.query(
       `SELECT password FROM user_details WHERE user_id = $1`,
-      [user_id]
+      [user_id],
     );
     const currentPassword = getCurrentPasswordQuery.rows[0].password;
 
     if (currentPassword === password) {
       await db.query(
         `UPDATE user_details SET password = $1 WHERE user_id = $2`,
-        [newPassword, user_id]
+        [newPassword, user_id],
       );
 
       res.status(200).json({ message: "Successfully Changed" });
@@ -186,7 +186,7 @@ exports.getCurrentPassword = async (req, res) => {
     const { user_id } = await userDetails.decodedToken(token);
     const query = `SELECT password FROM user_details WHERE user_id = $1`;
     const result = await db.query(query, [user_id]);
-    console.log(result.rows)
+    console.log(result.rows);
     const currentPassword = result.rows[0]?.password;
     if (currentPassword === null || currentPassword === undefined) {
       return res
@@ -225,7 +225,7 @@ exports.fetchReview = async (req, res) => {
     JOIN user_Details u ON r.user_id = u.user_id
     WHERE r.gym_id = $1;
     `,
-      [gym_id]
+      [gym_id],
     );
     res.status(200).json(fetchReviewQuery.rows);
   } catch (err) {
@@ -244,7 +244,7 @@ exports.userViewBookings = async (req, res) => {
     WHERE b.user_id = $1
     ORDER BY b.booking_date;
     `,
-      [user_id]
+      [user_id],
     );
     res.status(200).json(userViewBookingsQuery.rows);
   } catch (err) {
@@ -260,7 +260,7 @@ exports.addwishlist = async (req, res) => {
     console.log(user_id, gym_id);
     const addwishlistQuery = await db.query(
       `Insert into wishlist(user_id,gym_id) VALUES ($1,$2)`,
-      [user_id, gym_id]
+      [user_id, gym_id],
     );
     res.status(200).json({ message: "Successfully added" });
   } catch (error) {
@@ -283,11 +283,11 @@ exports.viewWishList = async (req, res) => {
       JOIN gym_Details g ON w.gym_id = g.gym_id
       WHERE w.user_id = $1;
       `,
-      [user_id]
+      [user_id],
     );
     for (let i = 0; i < viewWishListQuery.rows.length; i++) {
       const imageUrl = await firebaseController.downlaod_image(
-        viewWishListQuery.rows[i].gym_image
+        viewWishListQuery.rows[i].gym_image,
       );
       viewWishListQuery.rows[i].gym_image = imageUrl;
     }
@@ -317,11 +317,11 @@ const gymGetImage = async (gym_id) => {
   try {
     const gymImagesResult = await db.query(
       "Select image_name FROM gym_images WHERE gym_id = $1",
-      [gym_id]
+      [gym_id],
     );
     for (let i = 0; i < gymImagesResult.rows.length; i++) {
       const imageUrl = await firebaseController.downlaod_image(
-        gymImagesResult.rows[i].image_name
+        gymImagesResult.rows[i].image_name,
       );
       gymImagesResult.rows[i].image_url = imageUrl;
     }

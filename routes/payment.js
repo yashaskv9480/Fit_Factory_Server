@@ -7,13 +7,13 @@ router.use(express.json());
 router.post(
   "/orders",
   jwtAuthenticator.isUser,
-  razorpayController.createOrders
+  razorpayController.createOrders,
 );
 
 router.post(
   "/verify",
   jwtAuthenticator.isUser,
-  razorpayController.paymentVerify
+  razorpayController.paymentVerify,
 );
 
 module.exports = router;

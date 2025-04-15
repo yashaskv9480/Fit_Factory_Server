@@ -15,34 +15,33 @@ router.post(
   "/addgymimage",
   jwtAuthenticator.jwt_verify,
   upload.single("image"),
-  clientController.gymAddImage
+  clientController.gymAddImage,
 );
 router.get(
   "/getgymimages",
   jwtAuthenticator.jwt_verify,
-  clientController.gymGetImage
+  clientController.gymGetImage,
 );
 router.get(
   "/bookingdetails",
   jwtAuthenticator.isClient,
-  clientController.getBookingDetails
+  clientController.getBookingDetails,
 );
 router.delete(
   "/deletegymimages/:image_name",
   jwtAuthenticator.isClient,
-  clientController.deleteGymImages
+  clientController.deleteGymImages,
 );
 router.get(
   "/viewgymdetails",
   jwtAuthenticator.isClient,
-  clientController.viewGymDetails
+  clientController.viewGymDetails,
 );
 
 router.put(
   "/updategymdetails",
   jwtAuthenticator.isClient,
-  clientController.updateGymDetails
+  clientController.updateGymDetails,
 );
-
 
 module.exports = router;

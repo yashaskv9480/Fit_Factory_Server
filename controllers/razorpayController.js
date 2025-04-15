@@ -31,7 +31,7 @@ exports.paymentVerify = async (req, res) => {
       req.body;
     const generated_signature = await hmac_sha256(
       razorpay_order_id + "|" + razorpay_payment_id,
-      process.env.RAZORPAY_KEY_SECRET
+      process.env.RAZORPAY_KEY_SECRET,
     );
 
     if (razorpay_signature === generated_signature) {

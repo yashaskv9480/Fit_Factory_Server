@@ -1,3 +1,3 @@
 .env
 node_modules
-controllers/firebase/image-demo-935e6-firebase-adminsdk-zmjel-348312efc1.json
+**/image-demo-*.json

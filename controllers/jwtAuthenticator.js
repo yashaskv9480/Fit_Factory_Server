@@ -6,7 +6,7 @@ exports.token_generation = async (
   name,
   userType,
   gym_id,
-  gym_name
+  gym_name,
 ) => {
   const token = jwt.sign(
     {
@@ -16,7 +16,7 @@ exports.token_generation = async (
       gym_id: gym_id,
       gym_name: gym_name,
     },
-    secretKey
+    secretKey,
   );
   return token;
 };

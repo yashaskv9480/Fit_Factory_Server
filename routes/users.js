@@ -17,28 +17,28 @@ router.get(
   "/getpassword",
   jwtAuthenticator.jwt_verify,
   jwtAuthenticator.jwt_verify,
-  userController.getCurrentPassword
+  userController.getCurrentPassword,
 );
 router.put(
   "/resetoauthpassword",
   jwtAuthenticator.jwt_verify,
-  userController.resetOauthPassword
+  userController.resetOauthPassword,
 );
 router.put(
   "/resetpassword",
   jwtAuthenticator.jwt_verify,
-  userController.resetPassword
+  userController.resetPassword,
 );
 
 router.get(
   "/userdetails",
   jwtAuthenticator.isUser,
-  userController.viewUserDetails
+  userController.viewUserDetails,
 );
 router.put(
   "/updateuserdetails",
   jwtAuthenticator.isUser,
-  userController.updateDetails
+  userController.updateDetails,
 );
 
 router.post("/addreview", jwtAuthenticator.isUser, userController.addReview);
@@ -46,31 +46,31 @@ router.get("/fetchreview/:gym_id", userController.fetchReview);
 router.get(
   "/viewuserbookings",
   jwtAuthenticator.isUser,
-  userController.userViewBookings
+  userController.userViewBookings,
 );
 
 router.post(
   "/checkdatebooked",
   jwtAuthenticator.isUser,
-  userController.checkDatesBooked
+  userController.checkDatesBooked,
 );
 
 router.post(
   "/addwishlist/:gym_id",
   jwtAuthenticator.isUser,
-  userController.addwishlist
+  userController.addwishlist,
 );
 
 router.get(
   "/viewwishlist",
   jwtAuthenticator.isUser,
-  userController.viewWishList
+  userController.viewWishList,
 );
 
 router.delete(
   "/deletewishlist/:gym_id",
   jwtAuthenticator.isUser,
-  userController.deleteWishList
+  userController.deleteWishList,
 );
 
 module.exports = router;
