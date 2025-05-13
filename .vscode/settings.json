@@ -1,0 +1,13 @@
+{
+    "yaml.schemas": {
+        "/home/kv/.vscode/extensions/continue.continue-1.0.8-linux-x64/config-yaml-schema.json": [
+            ".continue/**/*.yaml"
+        ],
+        "kubernetes": [
+            "deploy*.yaml",
+            "deploy-*.yml"
+        ],
+        "file:///home/kv/.vscode/extensions/atlassian.atlascode-3.6.5/resources/schemas/pipelines-schema.json": "bitbucket-pipelines.yml",
+        "https://gitlab.com/appsemble/appsemble/-/raw/HEAD/packages/cli/assets/appsemblerc.schema.json": "file:///home/kv/kv/Projects/Fit_Factory/Fit_Factory_Server/devOps/nginx-pod.yml"
+    }
+}

@@ -32,7 +32,7 @@ app.get("/api/test-database", async (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("Hello from Fit Factory!");
 });
 
 app.listen(port, () => {
